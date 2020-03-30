@@ -21,7 +21,9 @@ stages:
         displayName: Build and push an image to container registry
         inputs:
           command: 'buildAndPush'
-          repository: 'sbs/pipeline-test'
+          repository: 'sbs'
+          imageName: 'pipeline-test'
+          tag: 'node'
           Dockerfile: '**/Dockerfile'
           containerRegistry: 'plattform.azurecr.io'
 
