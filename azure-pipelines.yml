@@ -8,9 +8,6 @@ trigger:
 resources:
 - repo: self
 
-variables:
-  tag: '$(Build.BuildId)'
-
 stages:
 - stage: Build
   displayName: Build and push stage
@@ -27,5 +24,6 @@ stages:
           repository: 'sbs'
           Dockerfile: '**/Dockerfile'
           containerRegistry: 'plattform.azurecr.io'
+          tag: 'pipeline-test'
 
 
