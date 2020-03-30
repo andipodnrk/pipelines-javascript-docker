@@ -24,8 +24,7 @@ stages:
         displayName: Build and push an image to container registry
         inputs:
           command: 'buildAndPush'
-          repository: 'sbs-dev'
           Dockerfile: '**/Dockerfile'
-          containerRegistry: 'ACR Plattform Western Europe Intern'
+          containerRegistry: 'plattform.azurecr.io'
 
 
