@@ -1,0 +1,67 @@
+kind: Ingress
+apiVersion: extensions/v1beta1
+metadata:
+	name: pipeline-test
+	namespace: sbs-dev
+spec:
+	rules:
+	      - host: pipeline-test.kubeint.nrk.no
+	      http:
+                  paths:
+                        - backend:
+                              serviceName: pipeline-test
+                              servicePort: 80
+                        path: /
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+	name: pipeline-test
+	namespace: sbs-dev
+	labels:
+		app: pipeline-test
+spec:
+	ports:
+		- name: http
+		port: 80
+		targetPort: 80
+	selector:
+            app: pipeline-test
+---
+
+      kind: Deployment
+      apiVersion: apps/v1
+      metadata:
+            name: pipeline-test
+            namespace: sbs-dev
+            labels:
+                  app: pipeline-test
+            annotations: 
+                  nrk/email-contact: anders.ween@nrk.no
+                  nrk/documentation: 'https://confluence.nrk.no/display/STIL'
+                  nrk/slack-notification: '#sbs-notifications'
+      spec:
+            replicas: 1
+            template:
+                  metadata:
+                        labels:
+                              app: pipeline-test
+                  spec:
+                        containers:
+                              - name: pipeline-test
+                              image: 'plattform.azurecr.io/sbs/pipeline-test:32' 
+                              resources:
+                                    requests:
+                                          cpu: 200m
+                                          memory: 512Mi
+                                    limits:
+                                          cpu: 500m
+                                          memory: 1Gi
+                              ports:
+                                    - containerPort: 80
+                              env:
+                               - name: PORT
+                                     value: 80
+                               - name: WELCOME_MESSAGE
+                                     value: 'Dette er en test'
