@@ -54,7 +54,7 @@ spec:
     spec:
       containers:
         - name: pipeline-test
-          image: 'plattform.azurecr.io/sbs:35'
+          image: '$(containerRegistry)/$(imageName):$(tag)'
           ports:
             - containerPort: 80
           resources:
