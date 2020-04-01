@@ -8,6 +8,9 @@ trigger:
 resources:
 - repo: self
 
+variables:
+  tag: 'pipeline-test-$(Build.BuildId)'
+
 stages:
 - stage: Build
   displayName: Build and push stage
@@ -22,9 +25,14 @@ stages:
         inputs:
           command: 'buildAndPush'
           repository: 'sbs'
-          imageName: 'pipeline-test'
-          tag: 'node'
           Dockerfile: '**/Dockerfile'
-          containerRegistry: 'plattform.azurecr.io'
-
+          containerRegistry: $(containerRegistry)
+          tags: |
+            $(tag)
+      - task: KubernetesManifest@0
+        inputs:
+          action: 'deploy'
+          namespace: 'sbs-dev'
+          manifests: '**/kubernetes.yml'
+          containers: '$(containerRegistry)/sbs:$(tag)'
 
