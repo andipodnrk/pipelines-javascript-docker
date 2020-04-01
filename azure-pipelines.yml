@@ -9,7 +9,8 @@ resources:
 - repo: self
 
 variables:
-  tag: 'pipeline-test-$(Build.BuildId)'
+  tag: '$(Build.BuildId)'
+  imageName: 'sbs/pipeline-test'
 
 stages:
 - stage: Build
@@ -24,7 +25,7 @@ stages:
         displayName: Build and push an image to container registry
         inputs:
           command: 'buildAndPush'
-          repository: 'sbs'
+          repository: 'sbs/pipeline-test'
           Dockerfile: '**/Dockerfile'
           containerRegistry: $(containerRegistry)
           tags: |
@@ -32,7 +33,8 @@ stages:
       - task: KubernetesManifest@0
         inputs:
           action: 'deploy'
+          kubernetesServiceConnection: 'plattform-cluster-serviceconnection'
           namespace: 'sbs-dev'
           manifests: '**/kubernetes.yml'
-          containers: '$(containerRegistry)/sbs:$(tag)'
+          containers: '$(containerRegistry)/$(imageName):$(tag)'
 
