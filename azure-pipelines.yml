@@ -11,6 +11,7 @@ resources:
 variables:
   tag: '$(Build.BuildId)'
   imageName: 'sbs/pipeline-test'
+  containerRegistry: 'plattform.azurecr.io'
 
 stages:
 - stage: Build
