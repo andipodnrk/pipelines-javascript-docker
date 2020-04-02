@@ -5,7 +5,7 @@ metadata:
   namespace: sbs-dev
 spec:
   rules:
-  - host: pipeline-test.kubeint.nrk.no
+  - host: pipeline-test.intern-we.drift.azure.nrk.cloud
     http:
       paths:
       - backend:
