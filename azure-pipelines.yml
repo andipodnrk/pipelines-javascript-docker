@@ -34,8 +34,8 @@ stages:
       - task: KubernetesManifest@0
         inputs:
           action: 'deploy'
-          kubernetesServiceConnection: 'plattform-cluster-serviceconnection'
+          kubernetesServiceConnection: 'plattform-aks-platform-intern-we-sbs-dev-1585824333532'
           namespace: 'sbs-dev'
           manifests: '**/kubernetes.yml'
           containers: '$(containerRegistry)/$(imageName):$(tag)'
-
+    
