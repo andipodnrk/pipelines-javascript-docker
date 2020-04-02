@@ -31,6 +31,14 @@ stages:
           containerRegistry: $(containerRegistry)
           tags: |
             $(tag)
+
+      - bash: |
+          #/bin/bash
+          BuildId="$BUILD_BUILDID"
+          sed -i "s/BUILDNUMBER/$BuildId/g" ./kubernetes.yml
+          cat ./kubernetes.yml
+        displayName: 'Update manifest with build number'
+
       - task: KubernetesManifest@0
         inputs:
           action: 'deploy'
