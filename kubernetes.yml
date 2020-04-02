@@ -54,7 +54,7 @@ spec:
     spec:
       containers:
         - name: pipeline-test
-          image: 'plattform.azurecr.io/sbs/pipeline-test:latest'
+          image: 'plattform.azurecr.io/sbs/pipeline-test:BUILDNUMBER'
           ports:
             - containerPort: 80
           resources:
