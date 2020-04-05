@@ -8,6 +8,7 @@
     "start": "node server.js"
   },
   "dependencies": {
+    "@nrk/healthcheck": "^3.0.6",
     "express": "^4.16.4"
   }
 }
