@@ -27,6 +27,14 @@ steps:
       arguments: '--build-arg NPM_TOKEN=$(NPM_TOKEN)'
       tags: |
         $(tag)
+  - task: Docker@2
+    displayName: Push image
+    inputs:
+      containerRegistry: $(containerRegistry)
+      repository: 'sbs/pipeline-test'
+      command: push
+      tags: |
+        $(tag)
 
   - bash: |
       #/bin/bash
