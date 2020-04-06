@@ -17,15 +17,16 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-  - task: Docker@2
-    displayName: Build and push an image to container registry
-    inputs:
-      command: 'buildAndPush'
-      repository: 'sbs/pipeline-test'
-      Dockerfile: '**/Dockerfile'
-      containerRegistry: $(containerRegistry)
-      tags: |
-        $(tag)
+
+- task: Docker@2
+  inputs:
+    containerRegistry: $(containerRegistry)
+    repository: 'sbs/pipeline-test'
+    command: 'build'
+    Dockerfile: '**/Dockerfile'
+    arguments: '--build-arg NPM_TOKEN=$(NPM_TOKEN)'
+    tags: |
+      $(tag)
 
   - bash: |
       #/bin/bash
