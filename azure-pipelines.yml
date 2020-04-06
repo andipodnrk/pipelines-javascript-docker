@@ -13,43 +13,36 @@ variables:
   imageName: 'sbs/pipeline-test'
   containerRegistry: 'plattform.azurecr.io'
 
-stages:
-- stage: Build
-  displayName: Build and push stage
-  jobs:    
-  - job: Build
-    displayName: Build job
-    pool:
-      vmImage: 'ubuntu-latest'
-      steps:
+pool:
+  vmImage: 'ubuntu-latest'
 
-      - task: Npm@1
-        inputs:
-          command: 'install'
-          customEndpoint: 'NPM NRK'
+steps:
+  - task: Npm@1
+    inputs:
+      command: 'install'
+      customEndpoint: 'NPM NRK'
 
-      - task: Docker@2
-        displayName: Build and push an image to container registry
-        inputs:
-          command: 'buildAndPush'
-          repository: 'sbs/pipeline-test'
-          Dockerfile: '**/Dockerfile'
-          containerRegistry: $(containerRegistry)
-          tags: |
-            $(tag)
+  - task: Docker@2
+    displayName: Build and push an image to container registry
+    inputs:
+      command: 'buildAndPush'
+      repository: 'sbs/pipeline-test'
+      Dockerfile: '**/Dockerfile'
+      containerRegistry: $(containerRegistry)
+      tags: |
+        $(tag)
 
-      - bash: |
-          #/bin/bash
-          BuildId="$BUILD_BUILDID"
-          sed -i "s/BUILDNUMBER/$BuildId/g" ./kubernetes.yml
-          cat ./kubernetes.yml
-        displayName: 'Update manifest with build number'
+  - bash: |
+      #/bin/bash
+      BuildId="$BUILD_BUILDID"
+      sed -i "s/BUILDNUMBER/$BuildId/g" ./kubernetes.yml
+      cat ./kubernetes.yml
+    displayName: 'Update manifest with build number'
 
-      - task: KubernetesManifest@0
-        inputs:
-          action: 'deploy'
-          kubernetesServiceConnection: 'plattform-aks-platform-intern-we-sbs-dev-1585824333532'
-          namespace: 'sbs-dev'
-          manifests: '**/kubernetes.yml'
-          containers: '$(containerRegistry)/$(imageName):$(tag)'
-    
+  - task: KubernetesManifest@0
+    inputs:
+      action: 'deploy'
+      kubernetesServiceConnection: 'plattform-aks-platform-intern-we-sbs-dev-1585824333532'
+      namespace: 'sbs-dev'
+      manifests: '**/kubernetes.yml'
+      containers: '$(containerRegistry)/$(imageName):$(tag)'
