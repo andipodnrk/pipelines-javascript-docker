@@ -14,19 +14,18 @@ variables:
   containerRegistry: 'plattform.azurecr.io'
 
 stages:
-- stage: Npm
-  displayName: Build and push stage
-  jobs:
-    - job:
-      steps:        
-      - task: Npm@1
-        inputs:
-          command: 'install'
-          customEndpoint: 'NPM NRK'
-
 - stage: Build
   displayName: Build and push stage
   jobs:  
+  - job: NPM
+    displayName: Login and install from NPM
+    steps:
+    - task: Npm@1
+      inputs:
+        command: 'install'
+        workingDir: '**/'
+        customEndpoint: 'NPM NRK'
+  
   - job: Build
     displayName: Build job
     pool:
